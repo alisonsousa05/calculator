@@ -229,6 +229,17 @@ if(numberOfOperators==0){
             p.textContent = result;
 
         }
+        if(button=="%"){
+            let result = p.textContent;
+            result= Math.round(result * 10000) / 100000; 
+            p.textContent=result;
+            if(numberOfOperators==0){
+                firstNumber = result;
+            }
+            else{
+                secondNumber = result;
+            }
+        }
 
       
 })
