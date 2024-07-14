@@ -9,7 +9,8 @@ let numberOfOperators=0;
 
 function evaluatePoint(expression){
     let numberOfPoints=0;
-    if(p.textContent==''){
+    if(p.textContent[p.textContent.length-1]=='+'||p.textContent[p.textContent.length-1]=='-'||p.textContent[p.textContent.length-1]=='*'
+        ||p.textContent[p.textContent.length-1]=='/'){
         return '0.';
     }
     for (let digit of expression){
@@ -33,6 +34,10 @@ function evaluateExpression(expression){
     else if(expression[0]=='0' && expression[1]!='.'){
         return expression[1];
     }
+    else if(expression[expression.length-2]=='+'||expression[expression.length-2]=='-'||expression[expression.length-2]=='*'
+        ||expression[expression.length-2]=='/'){
+            return expression[expression.length-1];
+        }
     else{
         return expression;
     }
@@ -75,9 +80,106 @@ function evaluateOperator(expression){
         firstNumber = expression.substring(0,size-1);
         return expression;
     }
-
-
-
+    if(numberOfOperators==2){
+        if(expression[size-1]=='='){
+            if(operator=='+'){
+                let num1 = parseFloat(firstNumber);
+                let num2 = parseFloat(secondNumber);
+                let result = num1+num2;
+                result= Math.round(result * 10000) / 10000;
+                operator="";
+                firstNumber=result;
+                numberOfOperators=0;
+                secondNumber='';
+                return firstNumber;
+            }
+            if(operator=='-'){
+                let num1 = parseFloat(firstNumber);
+                let num2 = parseFloat(secondNumber);
+                let result = num1-num2;
+                result= Math.round(result * 10000) / 10000;
+                operator="";
+                firstNumber=result;
+                numberOfOperators=0;
+                secondNumber='';
+                return firstNumber;
+            }
+            if(operator=='*'){
+                let num1 = parseFloat(firstNumber);
+                let num2 = parseFloat(secondNumber);
+                let result = num1*num2;
+                result= Math.round(result * 10000) / 10000;
+                operator="";
+                firstNumber=result;
+                numberOfOperators=0;
+                secondNumber='';
+                return firstNumber;
+            }
+            if(operator=='/'){
+                let num1 = parseFloat(firstNumber);
+                let num2 = parseFloat(secondNumber);
+                if (num2==0){
+                    return "VAI SE LASCAR";
+                }
+                let result = num1/num2;
+                operator="";
+                result= Math.round(result * 10000) / 10000;
+                firstNumber=result;
+                numberOfOperators=0;
+                secondNumber='';
+                return firstNumber;
+            }
+        }
+        if(operator=='+'){
+            let num1 = parseFloat(firstNumber);
+            let num2 = parseFloat(secondNumber);
+            let result = num1+num2;
+            result= Math.round(result * 10000) / 10000;
+            operator=expression[size-1];
+            firstNumber=result;
+            numberOfOperators=1;
+            secondNumber='';
+            return firstNumber+operator;
+        }
+        if(operator=='-'){
+            let num1 = parseFloat(firstNumber);
+            let num2 = parseFloat(secondNumber);
+            let result = num1-num2;
+            result= Math.round(result * 10000) / 10000;
+            operator=expression[size-1];
+            firstNumber=result;
+            numberOfOperators=1;
+            secondNumber='';
+            return firstNumber+operator;
+        }
+        if(operator=='*'){
+            console.log(firstNumber);
+            console.log(secondNumber);
+            let num1 = parseFloat(firstNumber);
+            let num2 = parseFloat(secondNumber);
+            let result = num1*num2;
+            result= Math.round(result * 10000) / 10000;
+            operator=expression[size-1];
+            firstNumber=result;
+            numberOfOperators=1;
+            secondNumber='';
+            return firstNumber+operator;
+        }
+        if(operator=='/'){
+            let num1 = parseFloat(firstNumber);
+            let num2 = parseFloat(secondNumber);
+            if (num2==0){
+                return "VAI SE LASCAR";
+            }
+            let result = num1/num2;
+            result= Math.round(result * 10000) / 10000;
+            operator=expression[size-1];
+            firstNumber=result;
+            numberOfOperators=1;
+            secondNumber='';
+            return firstNumber+operator;
+        }
+    }
 }
 
 if(numberOfOperators==0){
@@ -94,17 +196,32 @@ if(numberOfOperators==0){
         if(button=='.'){
             let result = evaluatePoint(p.textContent + button);
             p.textContent = result;
-            firstNumber = result;
+            if(numberOfOperators==0){
+                firstNumber = result;
+            }
+            else{
+                secondNumber = result;
+            }
         }
         if(target.className=='btn' && button!="."){
             let result = evaluateExpression(p.textContent + button);
             p.textContent = result;
-            firstNumber = result;
+            if(numberOfOperators==0){
+                firstNumber = result;
+            }
+            else{
+                secondNumber = result;
+            }
         }
         if(button=='+/-'){
             let result = evaluateSignal(p.textContent);
             p.textContent = result;
-            firstNumber = result;
+            if(numberOfOperators==0){
+                firstNumber = result;
+            }
+            else{
+                secondNumber = result;
+            }
         }
         if(target.className=='btn-column'){
             numberOfOperators +=1;
@@ -113,10 +230,14 @@ if(numberOfOperators==0){
 
         }
 
-    
+      
 })
 }
 
+
+
+
+/*
 if(numberOfOperators==1){
     calculadora.addEventListener("click", (event) =>{
         const target = event.target;
@@ -147,9 +268,9 @@ if(numberOfOperators==1){
             numberOfOperators +=1;
             let result = evaluateOperator(p.textContent + button);
             p.textContent = result;
-
         }
 
     
 })
 }
+*/
